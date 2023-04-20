@@ -34,17 +34,23 @@ public class Cookie {
     public String getRandomCookie() {
         int max = cookies.size();
         Random rand = new Random();
-        String randomCookie;
+        
+        // String randomCookie;
 
-        try {
+        /* try {
             cookies.get(rand.nextInt(max));
         } catch (IllegalArgumentException ex){
             ex.printStackTrace();
         } finally {
             randomCookie = cookies.get(rand.nextInt(max));
-        }
-
-        return randomCookie;
+        } 
         
+        return randomCookie;*/
+
+        if (cookies == null) {
+            return "There is no spoon";
+        } else {
+            return cookies.get(rand.nextInt(max));
+        }
     }
 }

@@ -20,6 +20,12 @@ public class App {
 
         File cookieFile = new File(fileName); // assume fileName is full path
 
+        // test cookie class
+        Cookie cookie = new Cookie();
+        cookie.readCookieFile(fileName);
+        System.out.println(cookie.getRandomCookie());
+        System.out.println(cookie.getRandomCookie());
+
         if (!cookieFile.exists()) {
             System.out.println("Cookie file not found");
             System.exit(0);
@@ -49,6 +55,11 @@ public class App {
                         // instantiate cookie.java
                         // get a random cookie
                         // send cookie using DOS
+                        dos.writeUTF(cookie.getRandomCookie());
+                        dos.flush();
+                    } else {
+                        dos.writeUTF("Please enter a valid command");
+                        dos.flush();
                     }
                     // slide 10 - send message
 
