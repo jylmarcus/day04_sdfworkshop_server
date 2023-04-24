@@ -1,14 +1,9 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws NumberFormatException, IOException {
@@ -20,11 +15,9 @@ public class App {
 
         File cookieFile = new File(fileName); // assume fileName is full path
 
-        // test cookie class
+        //initialize cookie input
         Cookie cookie = new Cookie();
         cookie.readCookieFile(fileName);
-        System.out.println(cookie.getRandomCookie());
-        System.out.println(cookie.getRandomCookie());
 
         if (!cookieFile.exists()) {
             System.out.println("Cookie file not found");
@@ -33,55 +26,19 @@ public class App {
 
         // slide 8 - establish server connection
         ServerSocket ss = new ServerSocket(Integer.parseInt(port));
-        Socket socket = ss.accept();
+        System.out.println("Press enter to continue");
 
-        // slide 9
-        try (InputStream is = socket.getInputStream()) {
-            BufferedInputStream bis = new BufferedInputStream(is);
-            DataInputStream dis = new DataInputStream(bis); // read up on this later
+        //scanner to close server
+        Scanner scanner = new Scanner(System.in);
 
-            // store data sent over from client
-            String msgReceived = "";
-
-            try (OutputStream os = socket.getOutputStream()) {
-                BufferedOutputStream bos = new BufferedOutputStream(os);
-                DataOutputStream dos = new DataOutputStream(bos);
-
-                while (!msgReceived.equals("close")) {
-                    // slide 9 - receive message
-                    msgReceived = dis.readUTF();
-
-                    if (msgReceived.equals("get-cookie")) {
-                        // instantiate cookie.java
-                        // get a random cookie
-                        // send cookie using DOS
-                        dos.writeUTF(cookie.getRandomCookie());
-                        dos.flush();
-                    } else {
-                        dos.writeUTF("Please enter a valid command");
-                        dos.flush();
-                    }
-                    // slide 10 - send message
-
-                }
-
-                // close all output stream
-                dos.close();
-                bos.close();
-                os.close();
-
-            } catch (EOFException ex) {
-                ex.printStackTrace();
-            }
-
-            // close all input stream
-            dis.close();
-            bis.close();
-            is.close();
-
-        } catch (EOFException ex) {
-            socket.close();
-            ss.close();
+        while (!scanner.nextLine().equals("quit")) {
+            Socket socket = ss.accept();
+            System.out.println("Accepted connection from: " + socket.getInetAddress());
+            CookieClientHandler c = new CookieClientHandler(socket, cookie);
+            c.start();
         }
+
+        scanner.close();
+        ss.close();
     }
 }

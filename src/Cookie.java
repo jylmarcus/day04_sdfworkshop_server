@@ -35,9 +35,9 @@ public class Cookie {
         int max = cookies.size();
         Random rand = new Random();
         
-        // String randomCookie;
+        String randomCookie;
 
-        /* try {
+        try {
             cookies.get(rand.nextInt(max));
         } catch (IllegalArgumentException ex){
             ex.printStackTrace();
@@ -45,12 +45,13 @@ public class Cookie {
             randomCookie = cookies.get(rand.nextInt(max));
         } 
         
-        return randomCookie;*/
+        return randomCookie;
 
-        if (cookies == null) {
+        /*if (max == 0) {
             return "There is no spoon";
         } else {
             return cookies.get(rand.nextInt(max));
         }
+        */
     }
 }
